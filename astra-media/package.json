@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.5",
+    "codemirror": "^5.65.17",
     "vue": "^3.4.29"
   },
   "devDependencies": {

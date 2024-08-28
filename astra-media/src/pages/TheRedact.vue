@@ -1,11 +1,16 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import defineCustomMode from '@/functions';
+import CodeMirror from 'codemirror';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/dracula.css'; // Убедитесь, что ваш файл стилей подключен
 
 const scriptContent = ref('')
 const history = ref([])
 const redoHistory = ref([])
 const scriptName = ref('')
 const scriptDescription = ref('')
+const darkMode = ref(true);
 
 const emit = defineEmits(['gomain'])
 
@@ -39,6 +44,25 @@ const redoLastLine = () => {
     scriptContent.value += (scriptContent.value ? '\n' : '') + lastUndoneLine
   }
 }
+
+const toggleTheme = () => {
+  darkMode.value = !darkMode.value;
+  const theme = darkMode.value ? 'dracula' : 'eclipse';
+  if (window.myCodeMirror) {
+    window.myCodeMirror.setOption('theme', theme);
+  }
+}
+
+onMounted(() => {
+  defineCustomMode(CodeMirror);
+
+  // Инициализируем CodeMirror с пользовательским режимом и темой Dracula
+  window.myCodeMirror = CodeMirror.fromTextArea(document.getElementById('scriptContentInput'), {
+    lineNumbers: true,
+    mode: "customDoc",
+    theme: "dracula" // Начальная тема
+  });
+});
 </script>
 
 <template>
@@ -78,6 +102,10 @@ const redoLastLine = () => {
     <div class="flex justify-between mt-4">
       <button @click="saveScript" class="bg-blue-500 text-white px-4 py-2 rounded">
         Сохранить
+      </button>
+
+      <button @click="toggleTheme" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">
+        Переключить тему
       </button>
 
       <button @click="$emit('goToMain')" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Назад</button>
