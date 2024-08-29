@@ -1,0 +1,8 @@
+.cm-string { color: #17A2B8; } /* Бирюзовый */
+.cm-comment { color: #6C757D; } /* Серый для комментариев */
+.cm-number { color: #6F42C1; } /* Фиолетовый */
+.cm-keyword { color: #007BFF; } /* Синий */
+.cm-operator { color: #FFC107; } /* Желтый */
+.cm-error   {color: red}
+
+

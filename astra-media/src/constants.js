@@ -14,15 +14,3 @@ export const NAV_ITEMS = {
     [PAGE_LIBRARY]: BookOpenIcon,
     [PAGE_LOGIN]: ArrowRightEndOnRectangleIcon
 }
-
-// цвет подсветки
-export const COLORS = {
-    keyword1: '#ff79c6',
-    keyword2: '#8be9fd',
-    keyword3: '#e7f092',
-    number: '#bd93f9',
-    string: '#f1fa8c',
-    variable: '#ff5555'
-  };
-  
-  

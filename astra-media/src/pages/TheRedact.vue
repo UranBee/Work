@@ -4,10 +4,9 @@ import defineCustomMode from '@/functions';
 import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css'; // Убедитесь, что ваш файл стилей подключен
+import '../higlightStyle.css'
 
 const scriptContent = ref('')
-const history = ref([])
-const redoHistory = ref([])
 const scriptName = ref('')
 const scriptDescription = ref('')
 const darkMode = ref(true);
@@ -15,34 +14,8 @@ const darkMode = ref(true);
 const emit = defineEmits(['gomain'])
 
 const saveScript = () => {
+  scriptContent.value = window.myCodeMirror.getValue();
   console.log('Сценарий сохранен:', scriptName.value, scriptContent.value)
-  history.value = []
-  redoHistory.value = []
-}
-
-const handleKeyDown = (event) => {
-  if (event.ctrlKey && event.key === 'z') {
-    event.preventDefault()
-    undoLastLine()
-  } else if (event.ctrlKey && event.key === 'y') {
-    event.preventDefault()
-    redoLastLine()
-  }
-}
-
-const undoLastLine = () => {
-  const lines = scriptContent.value.split('\n')
-  if (lines.length > 0) {
-    redoHistory.value.push(lines.pop())
-    scriptContent.value = lines.join('\n')
-  }
-}
-
-const redoLastLine = () => {
-  if (redoHistory.value.length > 0) {
-    const lastUndoneLine = redoHistory.value.pop()
-    scriptContent.value += (scriptContent.value ? '\n' : '') + lastUndoneLine
-  }
 }
 
 const toggleTheme = () => {
@@ -62,6 +35,7 @@ onMounted(() => {
     mode: "customDoc",
     theme: "dracula" // Начальная тема
   });
+  window.myCodeMirror.refresh();
 });
 </script>
 
@@ -93,10 +67,6 @@ onMounted(() => {
       <label for="scriptContentInput" class="block text-lg font-medium text-gray-700">Сценарий:</label>
       <textarea
         id="scriptContentInput"
-        v-model="scriptContent"
-        class="w-full h-64 p-2 border border-gray-300 rounded"
-        placeholder="Введите ваш сценарий..."
-        @keydown="handleKeyDown"
       ></textarea>
     </div>
     <div class="flex justify-between mt-4">
